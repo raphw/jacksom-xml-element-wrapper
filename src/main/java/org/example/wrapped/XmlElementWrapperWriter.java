@@ -15,12 +15,8 @@ class XmlElementWrapperWriter extends VirtualBeanPropertyWriter {
     private final BeanSerializer serializer;
     private boolean resolved;
 
-    XmlElementWrapperWriter(BeanPropertyDefinition propDef,
-                            Annotations contextAnnotations,
-                            JavaType declaredType,
-                            BeanSerializer serializer) {
-
-        super(propDef, contextAnnotations, declaredType);
+    XmlElementWrapperWriter(BeanPropertyDefinition definition, Annotations annotations, JavaType type, BeanSerializer serializer) {
+        super(definition, annotations, type);
         this.serializer = serializer;
     }
 
