@@ -4,12 +4,15 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.cfg.MapperConfig;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.deser.BeanDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerBase;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.fasterxml.jackson.databind.deser.impl.BeanPropertyMap;
+import sun.util.resources.be.CalendarData_be;
 
 import java.io.IOException;
 
@@ -17,28 +20,27 @@ class XmlElementWrapperDeserializer extends BeanDeserializer {
 
     boolean alive;
 
+    private BeanPropertyMap beanProperties;
+
     XmlElementWrapperDeserializer(BeanDeserializer source) {
         super(source);
-        SettableBeanProperty[] properties = _beanProperties.getPropertiesInInsertionOrder();
-        for (int index = 0; index < properties.length; index++) {
-            PropertyName name = XmlElementWrapperModule.wrapper(properties[index].getMember());
+        BeanPropertyMap beanProperties = _beanProperties;
+        for (SettableBeanProperty property : _beanProperties.getPropertiesInInsertionOrder()) {
+            PropertyName name = XmlElementWrapperModule.wrapper(property.getMember());
             if (name != null) {
                 alive = true;
-                _beanProperties.replace(properties[index], properties[index].withName(name).withValueDeserializer(new ValueDeserializer(
-                        properties[index].getName(),
-                        properties[index].getValueDeserializer(),
-                        properties[index].getType()
+                beanProperties = beanProperties.withProperty(property.withName(name).withValueDeserializer(new ValueDeserializer(
+                        property.getName(),
+                        property.getValueDeserializer(),
+                        property.getType()
                 )));
             }
         }
+        this.beanProperties = beanProperties;
     }
 
     BeanDeserializerBase resolve() {
-        return withBeanProperties(new BeanPropertyMap(
-                _beanProperties,
-                _beanProperties.isCaseInsensitive()
-        ) {
-        });
+        return withBeanProperties(beanProperties);
     }
 
     private static class ValueDeserializer extends JsonDeserializer<Object> {

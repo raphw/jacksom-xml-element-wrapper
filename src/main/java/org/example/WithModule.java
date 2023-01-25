@@ -16,8 +16,11 @@ public class WithModule {
                 .registerModule(new JaxbAnnotationModule())
                 .registerModule(new XmlElementWrapperModule());
         String jsonWith = objectMapper.writeValueAsString(new WithXewPlugin());
+        String jsonWithout = "{\"value\":[\"foo\",\"bar\"]}";
         System.out.println(jsonWith);
+        System.out.println(jsonWithout);
         System.out.println(objectMapper.readValue(jsonWith, WithXewPlugin.class).getValue());
+        System.out.println(objectMapper.readValue(jsonWithout, WithXewPlugin.class).getValue());
     }
 
     public static class WithXewPlugin {
