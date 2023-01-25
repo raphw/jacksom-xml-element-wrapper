@@ -12,8 +12,14 @@ public class XmlElementWrapperModule extends SimpleModule {
     private static final String DEFAULT = "##default";
 
     public XmlElementWrapperModule() {
+        this(true);
+    }
+
+    public XmlElementWrapperModule(boolean serialization) {
         super(XmlElementWrapper.class.getName() + "Module");
-        setSerializerModifier(new XmlElementWrapperSerializerModifier());
+        if (serialization) {
+            setSerializerModifier(new XmlElementWrapperSerializerModifier());
+        }
         setDeserializerModifier(new XmlElementWrapperDeserializerModifier());
     }
 
