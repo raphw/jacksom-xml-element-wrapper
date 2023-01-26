@@ -57,7 +57,7 @@ class XmlElementWrapperDeserializer extends BeanDeserializer {
         }
 
         @Override
-        public Object deserialize(JsonParser parser, DeserializationContext context) throws IOException, JacksonException {
+        public Object deserialize(JsonParser parser, DeserializationContext context) throws IOException {
             if (!parser.nextFieldName().equals(name) || !parser.nextToken().equals(JsonToken.START_ARRAY)) {
                 throw new JsonParseException(parser, "Expected array with name: " + name);
             }
