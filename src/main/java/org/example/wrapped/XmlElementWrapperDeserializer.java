@@ -12,15 +12,14 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerBase;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.fasterxml.jackson.databind.deser.impl.BeanPropertyMap;
-import sun.util.resources.be.CalendarData_be;
 
 import java.io.IOException;
 
 class XmlElementWrapperDeserializer extends BeanDeserializer {
 
-    boolean alive;
+    private final BeanPropertyMap beanProperties;
 
-    private BeanPropertyMap beanProperties;
+    boolean alive;
 
     XmlElementWrapperDeserializer(BeanDeserializer source) {
         super(source);
