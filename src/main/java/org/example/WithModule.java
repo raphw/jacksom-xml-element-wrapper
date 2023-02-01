@@ -13,8 +13,8 @@ public class WithModule {
 
     public static void main(String[] args) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper()
-                .registerModule(new JaxbAnnotationModule())
-                .registerModule(new XmlElementWrapperModule());
+                .registerModule(new XmlElementWrapperModule())
+                .registerModule(new JaxbAnnotationModule());
         String jsonWith = objectMapper.writeValueAsString(new WithXewPlugin());
         String jsonWithout = "{\"value\":[\"foo\",\"bar\"]}";
         System.out.println(jsonWith);
